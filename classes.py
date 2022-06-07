@@ -137,10 +137,13 @@ class Clientes:
 
 class ChromeAuto:
     def __init__(self):
+        options = webdriver.ChromeOptions() 
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
         self.login = '013.681.763-72'
         self.senha = 'BAE32066'
         self.url = 'https://iss.fortaleza.ce.gov.br/grpfor/login.seam?cid=36452'
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(options=options)
+        self.driver.maximize_window()
 
     def abrir_site(self):
         self.driver.get(self.url)
@@ -255,8 +258,9 @@ class ChromeAuto:
                     dadosClientes.valor[posicao] * 100)
 
                 # VALIDAR CAMPOS OBRIGATÓRIOS DA NF-E
-                return
                 self.driver.find_element(By.XPATH, '//*[@id="emitirnfseForm:btnCalcular"]').click()
+                
+                time.sleep(2)
 
                 # CONFIRMAÇÃO DA EMISSÃO DA NOTA
                 self.driver.find_element(By.XPATH,
@@ -278,8 +282,7 @@ class ChromeAuto:
 
                     # RENOMEANDO ARQUIVO
                     oldName = f'C:\\Users\\{usuario}\\Downloads\\relatorio.pdf'
-                    newName = f'C:\\Users\\{usuario}\\Downloads\\' \
-                              f'{dadosClientes.razao[posicao]} {dadosClientes.cnpj[posicao]}.pdf'
+                    newName = f'C:\\Users\\{usuario}\\Downloads\\{dadosClientes.razaoSocial[posicao]} {dadosClientes.cnpj[posicao]}.pdf'
                     os.rename(oldName, newName)
 
                 # VOLTA AO INÍCIO
@@ -307,7 +310,7 @@ class OutrasFuncoes:
         # Como utilizar o programa da maneira correta.
         print('PARA O BOM FUNCIONAMENTO DO PROGRAMA:')
         print('Na mesma pasta que você está executando esse programa, tenha uma planilha chamada "notas fiscais".')
-        print('A planilha deve conter apenas 3 colunas: CNPJ, Razão Social e VALOR.')
+        print('A planilha deve conter apenas 3 colunas: CNPJ, RAZÃO SOCIAL e VALOR.')
         print('A coluna CNPJ serão as lojas que serão emitidas.')
         print('A coluna VALOR serão os valores que serão emitidos para cada loja/CNPJ.\n')
         print('Lembre-se de REMOVER os seguintes clientes:')
