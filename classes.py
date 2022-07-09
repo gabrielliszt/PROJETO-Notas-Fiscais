@@ -1,5 +1,6 @@
 import os
 import time
+import openpyxl
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -137,7 +138,7 @@ class Clientes:
 
 class ChromeAuto:
     def __init__(self):
-        options = webdriver.ChromeOptions() 
+        options = webdriver.ChromeOptions()
         options.add_experimental_option("excludeSwitches", ["enable-logging"])
         self.login = '013.681.763-72'
         self.senha = 'BAE32066'
@@ -259,8 +260,8 @@ class ChromeAuto:
 
                 # VALIDAR CAMPOS OBRIGATÓRIOS DA NF-E
                 self.driver.find_element(By.XPATH, '//*[@id="emitirnfseForm:btnCalcular"]').click()
-                
-                time.sleep(2)
+
+                time.sleep(3)
 
                 # CONFIRMAÇÃO DA EMISSÃO DA NOTA
                 self.driver.find_element(By.XPATH,
@@ -270,6 +271,8 @@ class ChromeAuto:
                 time.sleep(2)
 
                 # MOSTRANDO A NOTA QUE FOI FEITA
+                with open(file='log NF emitidas.txt', mode='a') as archive:
+                    archive.write(f'{dadosClientes.cnpj[posicao]}\n')
                 print(f'Nota fiscal do CNPJ {dadosClientes.cnpj[posicao]} emitida com sucesso.')
 
                 # BAIXAR NOTA
@@ -291,6 +294,8 @@ class ChromeAuto:
                 # MUDANDO AS INFORMAÇÕES PARA O PRÓXIMO CLIENTE
                 posicao = posicao + 1
             else:
+                with open(file='log NF não emitidas.txt', mode='a') as archive:
+                    archive.write(f'{dadosClientes.cnpj[posicao]}\n')
                 print(f'Cliente {dadosClientes.cnpj[posicao]} não cadastrado')
                 # MUDANDO AS INFORMAÇÕES PARA O PRÓXIMO CLIENTE
                 posicao = posicao + 1
