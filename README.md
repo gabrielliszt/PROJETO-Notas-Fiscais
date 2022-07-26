@@ -1,4 +1,3 @@
-# PROJETO-Notas-Fiscais-Versao-Teste
+# PROJECT: Automation of invoices
 
-O projeto para emissão de notas fiscais já foi concluído, aqui estamos apenas aprimorando mais funções.
-
+This project aims to automate the issuance of invoices, saving time.
